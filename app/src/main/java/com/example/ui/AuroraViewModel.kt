@@ -34,7 +34,8 @@ data class AuroraUiState(
     val glassOpacity: Float = 0.78f,
     val glassAccentMode: GlassAccentMode = GlassAccentMode.SOVEREIGN_GOLD,
     val selectedSchemaFilter: SchemaSectionFilter = SchemaSectionFilter.ALL,
-    val jsonLdPayload: String = AuroraRepository.buildJsonLd(SchemaSectionFilter.ALL)
+    val jsonLdPayload: String = AuroraRepository.buildJsonLd(SchemaSectionFilter.ALL),
+    val showIntro: Boolean = true
 ) {
     val selectedPrimegramFeature: PrimegramFeature
         get() = primegramFeatures.firstOrNull { it.id == selectedPrimegramFeatureId }
@@ -49,6 +50,14 @@ class AuroraViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(AuroraUiState())
     val uiState: StateFlow<AuroraUiState> = _uiState.asStateFlow()
+
+    fun dismissIntro() {
+        _uiState.update { it.copy(showIntro = false) }
+    }
+
+    fun replayIntro() {
+        _uiState.update { it.copy(showIntro = true) }
+    }
 
     fun toggleDivision(divisionId: String) {
         _uiState.update { state ->

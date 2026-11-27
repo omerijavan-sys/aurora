@@ -42,6 +42,7 @@ import com.example.ui.GlassAccentMode
 import com.example.ui.components.LiquidGlassCard
 import com.example.ui.components.SectionHeader
 import com.example.ui.components.SpecChip
+import com.example.ui.components.VisionSection
 import com.example.ui.theme.CrimsonPulse
 import com.example.ui.theme.GoldAmber
 import com.example.ui.theme.GoldBright
@@ -87,6 +88,13 @@ fun ArchitectureScreen(
                     eyebrow = "VISION & ARCHITECTURE PILLARS",
                     title = "Craft, Velocity & Glass Physics",
                     subtitle = "Architectural principles guiding every Aurora Empire product and design token."
+                )
+            }
+
+            item {
+                VisionSection(
+                    glassAlpha = state.glassOpacity,
+                    accentColor = activeAccent
                 )
             }
 

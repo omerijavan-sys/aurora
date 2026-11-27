@@ -11,9 +11,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -38,6 +43,7 @@ import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Diamond
 import androidx.compose.material.icons.filled.Hub
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.outlined.Architecture
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Diamond
@@ -56,6 +62,7 @@ import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -82,6 +89,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.model.NetworkNode
 import com.example.ui.AuroraViewModel
+import com.example.ui.components.CinematicIntroOverlay
 import com.example.ui.components.ObsidianAtmosphereBackground
 import com.example.ui.screens.ArchitectureScreen
 import com.example.ui.screens.EcosystemScreen
@@ -261,7 +269,10 @@ fun AuroraEmpireApp(
                     }
                 },
                 topBar = {
-                    AuroraExecutiveHeader(currentRoute = currentRoute)
+                    AuroraExecutiveHeader(
+                        currentRoute = currentRoute,
+                        onReplayIntro = viewModel::replayIntro
+                    )
                 },
                 bottomBar = {
                     if (!useNavigationRail) {
@@ -339,13 +350,24 @@ fun AuroraEmpireApp(
                     }
                 }
             }
+
+            AnimatedVisibility(
+                visible = state.showIntro,
+                enter = fadeIn(animationSpec = tween(350)),
+                exit = fadeOut(animationSpec = tween(450))
+            ) {
+                CinematicIntroOverlay(
+                    onSkip = viewModel::dismissIntro
+                )
+            }
         }
     }
 }
 
 @Composable
 private fun AuroraExecutiveHeader(
-    currentRoute: String
+    currentRoute: String,
+    onReplayIntro: () -> Unit
 ) {
     val activeLabel = auroraDestinations.firstOrNull { it.route == currentRoute }?.label ?: "Empire"
 
@@ -394,25 +416,55 @@ private fun AuroraExecutiveHeader(
         }
 
         Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .clip(RoundedCornerShape(50))
-                .background(ObsidianElevated)
-                .border(1.dp, Color.White.copy(alpha = 0.14f), RoundedCornerShape(50))
-                .padding(horizontal = 10.dp, vertical = 5.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .size(6.dp)
-                    .clip(CircleShape)
-                    .background(CrimsonPulse)
-            )
-            Spacer(modifier = Modifier.width(6.dp))
-            Text(
-                text = activeLabel.uppercase(),
-                style = MaterialTheme.typography.labelSmall,
-                color = InkPrimary
-            )
+                    .minimumInteractiveComponentSize()
+                    .clip(RoundedCornerShape(50))
+                    .background(ObsidianElevated)
+                    .border(1.dp, GoldBright.copy(alpha = 0.40f), RoundedCornerShape(50))
+                    .clickable(onClick = onReplayIntro)
+                    .padding(horizontal = 10.dp, vertical = 6.dp)
+                    .testTag("replay_intro_button")
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.PlayArrow,
+                    contentDescription = "Replay Aurora Empire intro film",
+                    tint = GoldBright,
+                    modifier = Modifier.size(14.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = "INTRO",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = GoldBright
+                )
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(50))
+                    .background(ObsidianElevated)
+                    .border(1.dp, Color.White.copy(alpha = 0.14f), RoundedCornerShape(50))
+                    .padding(horizontal = 10.dp, vertical = 6.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(6.dp)
+                        .clip(CircleShape)
+                        .background(CrimsonPulse)
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(
+                    text = activeLabel.uppercase(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = InkPrimary
+                )
+            }
         }
     }
 }
