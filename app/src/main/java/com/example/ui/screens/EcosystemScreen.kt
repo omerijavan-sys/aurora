@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -111,6 +112,8 @@ fun EcosystemScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(195.dp)
+                                .clickable { onLaunchUrl(AuroraRepository.FLAGSHIP_URL) }
+                                .testTag("primegram_hero_banner")
                         ) {
                             Image(
                                 painter = painterResource(id = R.drawable.img_primegram_showcase),
@@ -141,7 +144,8 @@ fun EcosystemScreen(
                                 SpecChip(
                                     text = "primegramx.co.ke",
                                     accentColor = GoldChampagne,
-                                    selected = true
+                                    selected = true,
+                                    onClick = { onLaunchUrl(AuroraRepository.FLAGSHIP_URL) }
                                 )
                             }
                             Column(
@@ -341,8 +345,11 @@ fun EcosystemScreen(
             // Portfolio Entities Index
             items(state.portfolioEntities, key = { it.id }) { entity ->
                 LiquidGlassCard(
-                    modifier = Modifier.fillMaxWidth(),
-                    accentColor = if (entity.externalUrl != null) GoldBright else CrimsonPulse
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("portfolio_entity_${entity.id}"),
+                    accentColor = if (entity.externalUrl != null) GoldBright else CrimsonPulse,
+                    onClick = entity.externalUrl?.let { url -> { onLaunchUrl(url) } }
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),

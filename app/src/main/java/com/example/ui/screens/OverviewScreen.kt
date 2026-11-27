@@ -8,6 +8,7 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,6 +41,7 @@ import androidx.compose.material.icons.outlined.PersonOutline
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -77,7 +79,7 @@ import com.example.ui.theme.ObsidianElevated
 fun OverviewScreen(
     state: AuroraUiState,
     onToggleDivision: (String) -> Unit,
-    onExploreEcosystem: () -> Unit,
+    onOpenPrimegramUrl: () -> Unit,
     onOpenFounderDossier: () -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
@@ -101,7 +103,7 @@ fun OverviewScreen(
             // 1. Hero Executive Card
             item {
                 HeroBrandCard(
-                    onExploreEcosystem = onExploreEcosystem,
+                    onOpenPrimegramUrl = onOpenPrimegramUrl,
                     onOpenFounderDossier = onOpenFounderDossier
                 )
             }
@@ -163,7 +165,7 @@ fun OverviewScreen(
 
 @Composable
 private fun HeroBrandCard(
-    onExploreEcosystem: () -> Unit,
+    onOpenPrimegramUrl: () -> Unit,
     onOpenFounderDossier: () -> Unit
 ) {
     Box(
@@ -238,7 +240,15 @@ private fun HeroBrandCard(
                     )
                 }
 
-                LiveTelemetryBadge(label = "PRIMEGRAM X", isCrimson = true)
+                LiveTelemetryBadge(
+                    label = "PRIMEGRAM X",
+                    isCrimson = true,
+                    modifier = Modifier
+                        .minimumInteractiveComponentSize()
+                        .clip(RoundedCornerShape(50))
+                        .clickable(onClick = onOpenPrimegramUrl)
+                        .testTag("hero_primegram_badge")
+                )
             }
 
             Spacer(modifier = Modifier.height(34.dp))
@@ -266,7 +276,7 @@ private fun HeroBrandCard(
                 GoldMetallicButton(
                     text = "Primegram X",
                     icon = Icons.AutoMirrored.Filled.ArrowForward,
-                    onClick = onExploreEcosystem,
+                    onClick = onOpenPrimegramUrl,
                     testTag = "hero_explore_primegram",
                     modifier = Modifier.weight(1f)
                 )

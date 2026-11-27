@@ -145,6 +145,7 @@ private const val SCENE_DURATION_MS = 4200
 @Composable
 fun CinematicIntroOverlay(
     onSkip: () -> Unit,
+    onOpenPrimegram: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     BackHandler { onSkip() }
@@ -508,7 +509,8 @@ fun CinematicIntroOverlay(
                                 SpecChip(
                                     text = chip,
                                     accentColor = activeAccent,
-                                    selected = true
+                                    selected = true,
+                                    onClick = if (chip == "primegramx.co.ke") onOpenPrimegram else null
                                 )
                             }
                         }

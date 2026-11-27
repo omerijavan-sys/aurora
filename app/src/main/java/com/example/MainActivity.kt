@@ -87,6 +87,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.data.AuroraRepository
 import com.example.model.NetworkNode
 import com.example.ui.AuroraViewModel
 import com.example.ui.components.CinematicIntroOverlay
@@ -303,7 +304,7 @@ fun AuroraEmpireApp(
                             OverviewScreen(
                                 state = state,
                                 onToggleDivision = viewModel::toggleDivision,
-                                onExploreEcosystem = { navigateTo(ROUTE_ECOSYSTEM) },
+                                onOpenPrimegramUrl = { openExternalUrl(AuroraRepository.FLAGSHIP_URL) },
                                 onOpenFounderDossier = { navigateTo(ROUTE_LEADERSHIP) },
                                 contentPadding = innerPadding
                             )
@@ -357,7 +358,8 @@ fun AuroraEmpireApp(
                 exit = fadeOut(animationSpec = tween(450))
             ) {
                 CinematicIntroOverlay(
-                    onSkip = viewModel::dismissIntro
+                    onSkip = viewModel::dismissIntro,
+                    onOpenPrimegram = { openExternalUrl(AuroraRepository.FLAGSHIP_URL) }
                 )
             }
         }
