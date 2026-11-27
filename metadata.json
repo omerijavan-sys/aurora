@@ -1,0 +1,6 @@
+{
+  "name": "Aurora Empire",
+  "description": "Official corporate dossier and digital brand platform for Aurora Empire, founded by Javan Omeri (MR. AURA) in Kisii, Kenya — home of Primegram X.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

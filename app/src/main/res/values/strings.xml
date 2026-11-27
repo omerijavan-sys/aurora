@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Aurora Empire</string>
+    <string name="tagline_short">Built in Kisii, Kenya • Engineered for the World</string>
+    <string name="founder_name">Javan Omeri</string>
+    <string name="founder_alias">MR. AURA • JAVA PRIME ULTRA • JP7 ULTRA</string>
+    <string name="contact_email">support@primegramx.co.ke</string>
+    <string name="flagship_url">https://primegramx.co.ke</string>
+    <string name="hq_location">Kisii, Kenya</string>
+</resources>
